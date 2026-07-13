@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Information</title>
+
+<style>
+
+:root{
+    --cardinal-red:#8C1515;
+    --cool-gray:#4D4F53;
+    --light-gray:#F4F4F2;
+    --white:#FFFFFF;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    height:100%;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    font-family:'Times New Roman', Times, serif;
+    color:var(--cool-gray);
+
+    background:
+        linear-gradient(rgba(255,255,255,.94),rgba(255,255,255,.94)),
+        url("https://www.transparenttextures.com/patterns/cubes.png");
+
+    background-color:#f5f5f5;
+
+}
+
+h1,h2{
+    color:var(--cardinal-red);
+}
+
+/*---------------- Identity Bar ----------------*/
+
+.identity-bar{
+
+    background:var(--cardinal-red);
+    color:white;
+
+    text-align:center;
+
+    font-size:12px;
+
+    padding:5px;
+
+    letter-spacing:1px;
+}
+
+/*---------------- Header ----------------*/
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 40px;
+
+    background:white;
+
+    border-bottom:1px solid #ddd;
+}
+
+.logo-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.logo-area img{
+
+    height:36px;
+
+    width:36px;
+}
+
+.logo-text{
+
+    font-size:20px;
+
+    color:var(--cardinal-red);
+
+    font-weight:bold;
+}
+
+nav ul{
+
+    list-style:none;
+
+    display:flex;
+
+    gap:28px;
+}
+
+nav a{
+
+    text-decoration:none;
+
+    color:var(--cool-gray);
+
+    font-weight:bold;
+
+    font-size:15px;
+}
+
+nav a:hover{
+
+    color:var(--cardinal-red);
+
+    text-decoration:underline;
+}
+
+/*---------------- Banner ----------------*/
+
+.banner {
+    background-color: var(--cardinal-red);
+    color: var(--white);
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.banner h1 {
+    color: var(--white);
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.banner p {
+    color: #f5f5f5;
+    font-style: italic;
+    font-size: 15px;
+}
+/*---------------- Main ----------------*/
+
+main{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+}
+
+.card{
+
+    width:720px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+    text-align:center;
+}
+
+/*---------------- Button ----------------*/
+
+.btn{
+
+    background:var(--cardinal-red);
+
+    color:white;
+
+    border:none;
+
+    padding:12px 28px;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    margin-bottom:20px;
+
+    transition:.3s;
+}
+
+.btn:hover{
+
+    background:#6e1010;
+}
+
+/*---------------- Table ----------------*/
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    overflow:hidden;
+
+    border-radius:8px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+th,td{
+
+    padding:10px 16px;
+
+    text-align:left;
+
+    border:1px solid #ddd;
+
+    font-size:15px;
+}
+
+th{
+
+    width:35%;
+
+    background:var(--cardinal-red);
+
+    color:white;
+}
+
+td{
+
+    background:var(--light-gray);
+}
+
+tr:nth-child(even) td{
+
+    background:#ececea;
+}
+
+/*---------------- Footer ----------------*/
+
+footer{
+
+    background:var(--cardinal-red);
+
+    color:white;
+
+    text-align:center;
+
+    padding:12px;
+
+    font-size:12px;
+}
+
+</style>
+
+</head>
+
+<body onload = "showWelcome()">
+
+<div class="identity-bar">
+SYMBIOSIS INTERNATIONAL (DEEMED UNIVERSITY)
+</div>
+
+<header>
+
+<div class="logo-area">
+
+<img src="https://yt3.googleusercontent.com/HmzxLu3bNe-i-YtaNxIzXK-mdQouqAjhT-8tQENdpgyLyCy4ddXzhmhZIsLw655TjNpMdAm7mOA=s900-c-k-c0x00ffffff-no-rj">
+
+<span class="logo-text">SIT Nagpur</span>
+
+</div>
+
+<nav>
+
+<ul>
+
+<li><a href="college.html">Home</a></li>
+
+<li><a href="student.html">Student Info</a></li>
+
+
+</ul>
+
+</nav>
+
+</header>
+
+<div class="banner">
+
+<h1>Student Information</h1>
+
+<p>A quick record of student details, generated on demand.</p>
+
+</div>
+
+<main>
+
+<div class="card">
+
+<button class="btn" onclick="loadStudentInfo()">
+Load Student Details
+</button>
+
+<table>
+
+<tr>
+<th>Name</th>
+<td id="name">--</td>
+</tr>
+
+<tr>
+<th>Roll Number</th>
+<td id="rollno">--</td>
+</tr>
+
+<tr>
+<th>Course</th>
+<td id="course">--</td>
+</tr>
+
+<tr>
+<th>Semester</th>
+<td id="semester">--</td>
+</tr>
+
+<tr>
+<th>Email</th>
+<td id="email">--</td>
+</tr>
+
+<tr>
+<th>Contact Number</th>
+<td id="contact">--</td>
+</tr>
+
+</table>
+
+</div>
+
+</main>
+
+<footer>
+
+&copy; 2026 Symbiosis Institute of Technology, Nagpur
+
+</footer>
+
+<script>
+
+function loadStudentInfo(){
+
+document.getElementById("name").innerHTML="<b>Sneha Shah</b>";
+
+document.getElementById("rollno").innerHTML="24070521271";
+
+document.getElementById("course").innerHTML="<i>B.Tech CSE, Honors in Data Science</i>";
+
+document.getElementById("semester").innerHTML="5th Semester";
+
+document.getElementById("email").innerHTML="sneha.shah.batch2024@sitnagpur.siu.edu.in";
+
+document.getElementById("contact").innerHTML="+91 987654321";
+
+}
+
+</script>
+<script src="Welcome.js"></script>
+</body>
+</html> 
