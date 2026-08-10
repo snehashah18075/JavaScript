@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Align Studio</title>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <nav>
+
+            <h1>ALIGN STUDIO</h1>
+
+            <ul>
+
+                <li><a href="#home">Home</a></li>
+
+                <li><a href="#collection">Collection</a></li>
+
+                <li><a href="#checkout">Checkout</a></li>
+
+                <li>
+                    <a href="#bag">
+                        Your Bag
+                        <span id="cart-count">0</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section id="home">
+
+            <h2>Move with Intention.</h2>
+
+            <p>
+                Discover premium yoga and Pilates essentials thoughtfully designed
+                for mindful movement and everyday wellness.
+            </p>
+
+            <button>
+                Explore Collection
+            </button>
+
+        </section>
+        <section id="about">
+
+    <div class="container">
+
+        <h2>About Align Studio</h2>
+
+        <p>
+            At Align Studio, we believe wellness begins with mindful movement. Our carefully curated collection combines elegant design,
+                functionality, and comfort to elevate every practice.
+        </p>
+
+    </div>
+
+</section>
+        
+        <!-- ================= COLLECTION ================= -->
+
+        <section id="collection">
+
+            <h2>Featured Collection</h2>
+
+            <div class="products">
+
+                <!-- Product 1 -->
+
+                <article class="product-card" data-name = "Cork Yoga Mat" data-price = "2999">
+
+                    <img src="images/yoga-mat.jpeg" alt="Cork Yoga Mat">
+
+                    <h3>Cork Yoga Mat</h3>
+
+                    <p>Natural cork surface with superior grip. Non-slip design</p>
+
+                    <h4>₹2999</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+
+                <!-- Product 2 -->
+
+                <article class="product-card" data-name = "Pilates Ring" data-price = "1499">
+
+                    <img src="images/pilates-ring.jpeg" alt="Pilates Ring">
+
+                    <h3>Pilates Ring</h3>
+
+                    <p>Lightweight resistance ring for full-body workouts.</p>
+
+                    <h4>₹1499</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+
+                <!-- Product 3 -->
+
+                <article class="product-card" data-name = "Resistance Band Set" data-price="999">
+
+                    <img src="images/resistance-band.jpeg" alt="Resistance Bands">
+
+                    <h3>Resistance Band Set</h3>
+
+                    <p>Versatile bands for strength and flexibility.</p>
+
+                    <h4>₹999</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+
+                <!-- Product 4 -->
+
+                <article class="product-card" data-name = "Yoga Block Pair" data-price="799">
+
+                    <img src="images/yoga-block.jpeg" alt="Yoga Block">
+
+                    <h3>Yoga Block Pair</h3>
+
+                    <p>Supportive blocks for balance and posture.</p>
+
+                    <h4>₹799</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+
+                <!-- Product 5 -->
+
+                <article class="product-card" data-name = "Foam Roller" data-price="1299">
+
+                    <img src="images/foam-roller.jpeg" alt="Foam Roller">
+
+                    <h3>Foam Roller</h3>
+
+                    <p>Deep muscle recovery after every session.</p>
+
+                    <h4>₹1299</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+
+                <!-- Product 6 -->
+
+                <article class="product-card" data-name = "Meditation Cushion" data-price="1899">
+
+                    <img src="images/meditation-cushion.jpg" alt="Meditation Cushion">
+
+                    <h3>Meditation Cushion</h3>
+
+                    <p>Comfortable support for meditation practice.</p>
+
+                    <h4>₹1899</h4>
+
+                    <button class = "add-btn">Add to Bag</button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= YOUR BAG ================= -->
+
+        <section id="bag">
+
+    <h2> Your Bag</h2>
+
+    <table id="cart-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Product</th>
+
+                <th>Price</th>
+
+                <th>Qty</th>
+
+                <th>Total</th>
+
+                <th>Remove</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="cart-items">
+
+            <tr>
+
+                <td colspan="5">
+
+                    Your wellness journey begins here.
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <h3>
+
+        Bag Total :
+        ₹<span id="bag-total">0</span>
+
+    </h3>
+
+</section>
+
+
+        <!-- ================= CHECKOUT ================= -->
+
+        <section id="checkout">
+
+            <h2>Checkout</h2>
+
+            <form>
+
+                <fieldset>
+
+                    <h3 class="checkout-title">Customer Information</h3>
+                    <div class = "row">
+                    <div class = "form-group">
+                    <label>
+
+                        Customer Name </label>
+
+                        <input
+                            type="text"
+                            id="customerName"
+                            required>
+
+                    </div>
+                    <div class = "form-group">
+
+                    <label>
+
+                        Mobile Number</label>
+
+                        <input
+                            type="tel"
+                            id="mobile"
+                            required>
+                        </div>
+                        </div>
+                    
+
+                </fieldset>
+
+
+
+                <fieldset>
+                <div class = "radio-group">
+                    <h3 class="checkout-title">Membership</h3>
+                    <div class = "radio-group">
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="membership"
+                            value="Member"
+                            id = "member">
+
+                        Align Circle Member
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="membership"
+                            value="Guest"
+                            id = "guest"
+                            checked>
+
+                        Guest
+
+                    </label>
+                    </div>
+                </fieldset>
+
+
+
+                <fieldset>
+
+                    <h3 class="checkout-title">Signature Packaging</h3>
+
+                    <select id="packaging">
+
+                        <option value="0">
+                            Standard Packaging
+                        </option>
+
+                        <option value="149">
+                            Signature Packaging (+₹149)
+                        </option>
+
+                    </select>
+
+                </fieldset>
+
+
+
+                <fieldset>
+
+                    <h3 class="checkout-title">Payment Details</h3>
+                    <div class = "radio-group">
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="UPI"
+                            id = "upi"
+                            checked>
+
+                        UPI
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Card"
+                            id = "card">
+
+                        Credit / Debit Card
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Net Banking"
+                            id = "netbanking">
+
+                        Net Banking
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="COD"
+                            id = "cod">
+
+                        Cash on Delivery
+
+                    </label>
+                    </div>
+                </fieldset>
+
+
+                <button type="button" id = "generate-btn">
+
+                    Generate Order Summary
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= ORDER SUMMARY ================= -->
+
+        <section id="summary">
+
+            <h2>Order Summary</h2>
+
+            <div id="invoice">
+
+                <p>
+
+                    Your order summary will appear here.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+
+            © 2026 Align Studio
+
+        </p>
+
+        <p>
+
+            Move with Intention.
+
+        </p>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
