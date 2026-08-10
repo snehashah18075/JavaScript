@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academic Performance Evaluator</title>
+
+  <!-- Google Fonts: Playfair Display for headings, Inter for body/data -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__mark">SG</span>
+      <div class="topbar__titles">
+        <h1 class="topbar__title">Student Grading System</h1>
+        <p class="topbar__subtitle">Semester Performance Evaluator</p>
+      </div>
+    </div>
+    <div class="topbar__meta">Academic Year 2026&ndash;27</div>
+  </header>
+
+  <!-- ============ MAIN DASHBOARD ============ -->
+  <main class="dashboard">
+
+    <!-- ============ FORM SECTION ============ -->
+    <section class="panel panel--form" aria-labelledby="form-heading">
+
+      <div class="panel__columns">
+
+        <!-- Student Information -->
+        <div class="panel__block">
+          <h2 id="form-heading" class="panel__heading">
+            <span class="panel__index">01</span> Student Information
+          </h2>
+
+          <div class="field">
+            <label for="studentName">Full Name</label>
+            <input type="text" id="studentName" placeholder="e.g. Ananya Deshmukh" autocomplete="off" />
+            <span class="field__error" id="error-studentName"></span>
+          </div>
+
+          <div class="field">
+            <label for="rollNumber">Roll Number</label>
+            <input type="text" id="rollNumber" placeholder="e.g. 24070142" autocomplete="off" />
+            <span class="field__error" id="error-rollNumber"></span>
+          </div>
+        </div>
+
+        <!-- Subject Marks -->
+        <div class="panel__block">
+          <h2 class="panel__heading">
+            <span class="panel__index">02</span> Subject Marks
+          </h2>
+          <p class="panel__hint">Enter marks out of 100 for each subject.</p>
+
+          <div class="marks-grid" id="marksGrid">
+            <!-- Subject rows are also built dynamically in JS via a loop,
+                 but are seeded here for a no-JS fallback / first paint -->
+            <div class="field field--mark">
+              <label for="subject1">Data Analytics</label>
+              <input type="number" id="subject1" data-subject="1" min="0" max="100" placeholder="0–100" />
+              <span class="field__error" id="error-subject1"></span>
+            </div>
+            <div class="field field--mark">
+              <label for="subject2">Economics</label>
+              <input type="number" id="subject2" data-subject="2" min="0" max="100" placeholder="0–100" />
+              <span class="field__error" id="error-subject2"></span>
+            </div>
+            <div class="field field--mark">
+              <label for="subject3">Business for Data Driven Companies</label>
+              <input type="number" id="subject3" data-subject="3" min="0" max="100" placeholder="0–100" />
+              <span class="field__error" id="error-subject3"></span>
+            </div>
+            <div class="field field--mark">
+              <label for="subject4">Operating Systems</label>
+              <input type="number" id="subject4" data-subject="4" min="0" max="100" placeholder="0–100" />
+              <span class="field__error" id="error-subject4"></span>
+            </div>
+            <div class="field field--mark">
+              <label for="subject5">DBMS</label>
+              <input type="number" id="subject5" data-subject="5" min="0" max="100" placeholder="0–100" />
+              <span class="field__error" id="error-subject5"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="panel__actions">
+        <button type="button" id="evaluateBtn" class="btn btn--primary">Evaluate Performance</button>
+        <button type="button" id="resetBtn" class="btn btn--ghost">Reset Form</button>
+      </div>
+    </section>
+
+    <!-- ============ REPORT SECTION ============ -->
+    <section class="panel panel--report" id="reportSection" aria-labelledby="report-heading" hidden>
+
+      <!-- Transcript, hidden until evaluation succeeds -->
+      <article class="transcript" id="transcript">
+
+        <header class="transcript__header">
+          <p class="transcript__eyebrow" id="report-heading">Academic Transcript</p>
+          <div class="transcript__student">
+            <h3 class="transcript__name" id="reportName">&nbsp;</h3>
+            <p class="transcript__roll" id="reportRoll">&nbsp;</p>
+          </div>
+          <span class="status-badge" id="statusBadge">PASS</span>
+        </header>
+
+        <div class="transcript__grade-block">
+          <span class="transcript__grade" id="reportGrade">A+</span>
+          <span class="transcript__grade-label">Overall Grade</span>
+        </div>
+
+        <div class="transcript__progress">
+          <div class="transcript__progress-track">
+            <div class="transcript__progress-fill" id="progressFill"></div>
+          </div>
+          <div class="transcript__progress-labels">
+            <span>0%</span>
+            <span id="progressPercentLabel">0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <div class="transcript__stats">
+          <div class="stat">
+            <span class="stat__value" id="reportPercentage">0.0%</span>
+            <span class="stat__label">Percentage</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value" id="reportTotal">0 / 500</span>
+            <span class="stat__label">Total Marks</span>
+          </div>
+        </div>
+
+        <div class="transcript__breakdown">
+          <p class="transcript__breakdown-title">Subject-wise Marks &amp; Grade</p>
+          <ul class="breakdown-list" id="breakdownList">
+            <!-- populated dynamically by JS -->
+          </ul>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>JavaScript Lab &middot; 24070521271_Sneha &middot; Sem 5</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

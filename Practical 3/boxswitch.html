@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mouseover Color Switch</title>
+    <script>
+        function switchColors() {
+            let box1 = document.getElementById("txtRed");
+            let box2 = document.getElementById("txtYellow");
+
+            // Store current colors
+            let color1 = box1.style.backgroundColor;
+            let color2 = box2.style.backgroundColor;
+
+            // Swap colors
+            box1.style.backgroundColor = color2;
+            box2.style.backgroundColor = color1;
+        }
+    </script>
+</head>
+<body>
+
+    <h2>Mouseover Color Switch</h2>
+
+    <input type="text" id="txtRed" value="Red Box"
+           style="background-color:red;"
+           onmouseover="switchColors()">
+
+    <br><br>
+
+    <input type="text" id="txtYellow" value="Yellow Box"
+           style="background-color:yellow;"
+           onmouseover="switchColors()">
+
+</body>
+</html>
