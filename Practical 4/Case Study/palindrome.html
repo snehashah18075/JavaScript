@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse & Palindrome</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        .container {
+            width: 380px;
+            padding: 35px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 25px;
+        }
+
+        .subtitle {
+            margin-bottom: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #555;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #222;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f7f7f7;
+            border-radius: 8px;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Number Checker</h1>
+        <p class="subtitle">Reverse a number & check for palindrome</p>
+
+        <input type="number" id="number" placeholder="Enter a number">
+
+        <button onclick="checkPalindrome()">Check Number</button>
+
+        <div id="result">
+            Result will appear here
+        </div>
+    </div>
+
+    <script>
+
+        // Function to reverse a given number
+        function reverseNumber(num) {
+            let reverse = 0;
+
+            while (num > 0) {
+                let digit = num % 10;
+                reverse = reverse * 10 + digit;
+                num = Math.floor(num / 10);
+            }
+
+            return reverse;
+        }
+
+        // Function to check whether the number is palindrome
+        function checkPalindrome() {
+
+            let num = Number(document.getElementById("number").value);
+
+            if (num < 0 || isNaN(num)) {
+                document.getElementById("result").innerHTML =
+                    "Please enter a valid positive number.";
+                return;
+            }
+
+            let reversed = reverseNumber(num);
+
+            if (num === reversed) {
+                document.getElementById("result").innerHTML =
+                    "<b>Reversed Number:</b> " + reversed +
+                    "<br><b>Result:</b> " + num + " is a Palindrome.";
+            } else {
+                document.getElementById("result").innerHTML =
+                    "<b>Reversed Number:</b> " + reversed +
+                    "<br><b>Result:</b> " + num + " is not a Palindrome.";
+            }
+        }
+
+    </script>
+
+</body>
+</html>

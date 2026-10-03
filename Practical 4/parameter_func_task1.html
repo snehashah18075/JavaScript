@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Example</title>
+</head>
+<body>
+
+    <h2>Addition using JavaScript</h2>
+
+    <!-- Input textboxes for the user to type numbers -->
+    <input type="number" id="num1">
+    <input type="number" id="num2">
+    
+    <!-- Button to trigger the addition calculation -->
+    <button onclick="calculateSum()">Add Numbers</button>
+
+    <script>
+        // Core addition function
+        function add(a, b) {
+            return a + b;
+        }
+
+        // Handler function to read inputs, calculate, and display the result
+        function calculateSum() {
+            // Retrieve values from the textboxes using their IDs
+            let firstValue = document.getElementById("num1").value;
+            let secondValue = document.getElementById("num2").value;
+
+            // Convert string inputs to floats to prevent text concatenation (e.g., 5 + 3 = 53)
+            let n1 = parseFloat(firstValue);
+            let n2 = parseFloat(secondValue);
+
+            // Validate that both inputs are valid numbers
+            if (isNaN(n1) || isNaN(n2)) {
+                alert("Please enter valid numbers in both boxes.");
+                return;
+            }
+
+            // Calculate the total using the add function
+            let result = add(n1, n2);
+
+            // Display the final calculation to the user
+            alert("The sum is " + result);
+        }
+    </script>
+
+</body>
+</html>
