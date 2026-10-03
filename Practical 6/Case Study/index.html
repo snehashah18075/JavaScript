@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email & Text Analyzer — Practical 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">Aa</div>
+        <div>
+          <h1>Email &amp; Text Analyzer</h1>
+          <p>Practical 6 &bull; String Functions &amp; Regex</p>
+        </div>
+      </div>
+      <div class="id-tag">
+        <span>NAME: <strong contenteditable="true">Sneha Shah</strong></span>
+        <span>PRN: <strong contenteditable="true">24070521271</strong></span>
+      </div>
+    </header>
+
+    <main class="grid">
+
+      <!-- LEFT COLUMN -->
+      <div class="col left-col">
+
+        <section class="card">
+          <div class="card-head">
+            <div class="icon-chip icon-cyan">✉</div>
+            <h2>Email Validation</h2>
+          </div>
+          <div class="input-row">
+            <input type="text" id="emailInput" placeholder="Enter an email address">
+            <button id="validateBtn" class="btn-primary">Validate</button>
+          </div>
+          <p id="emailResult" class="result-msg"></p>
+        </section>
+
+        <section class="card grow">
+          <div class="card-head">
+            <div class="icon-chip icon-amber">Aa</div>
+            <h2>Text Analyzer</h2>
+          </div>
+          <textarea id="textInput" placeholder="Type or paste your text here..."></textarea>
+          <div class="btn-row">
+            <button id="analyzeBtn" class="btn-primary">Analyze Text</button>
+            <button id="clearBtn" class="btn-secondary">Clear</button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col right-col">
+
+        <section class="stat-grid">
+          <div class="stat-card stat-cyan">
+            <p class="stat-label">Characters</p>
+            <p class="stat-value" id="statChars">0</p>
+          </div>
+          <div class="stat-card stat-violet">
+            <p class="stat-label">Words</p>
+            <p class="stat-value" id="statWords">0</p>
+          </div>
+          <div class="stat-card stat-amber">
+            <p class="stat-label">Numbers</p>
+            <p class="stat-value" id="statNumbers">0</p>
+          </div>
+          <div class="stat-card stat-rose">
+            <p class="stat-label">Emails</p>
+            <p class="stat-value" id="statEmails">0</p>
+          </div>
+        </section>
+
+        <section class="card grow">
+          <div class="card-head">
+            <div class="icon-chip icon-violet">🔍</div>
+            <h2>Extracted Data</h2>
+          </div>
+          <div class="extracted-box">
+            <p class="extracted-label">Emails Found</p>
+            <p id="extractedEmails" class="extracted-value">—</p>
+          </div>
+          <div class="extracted-box">
+            <p class="extracted-label">Numbers Found</p>
+            <p id="extractedNumbers" class="extracted-value">—</p>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
