@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Array Analysis</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f4f2;
+            color: #29252a;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            height: 65px;
+            padding: 0 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-bottom: 1px solid #e8e4e5;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .logo span {
+            color: #80658a;
+        }
+
+        .nav-text {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: #8b8589;
+            text-transform: uppercase;
+        }
+
+
+        /* MAIN */
+
+        main {
+            height: calc(100vh - 105px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 850px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+
+        /* LEFT SIDE */
+
+        .intro {
+            padding-right: 20px;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #80658a;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 48px;
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        h1 span {
+            color: #80658a;
+        }
+
+        .description {
+            color: #777174;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 370px;
+        }
+
+        .example {
+            margin-top: 28px;
+            padding: 14px 17px;
+            background: white;
+            border-left: 3px solid #80658a;
+            border-radius: 5px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            color: #5e585d;
+        }
+
+
+        /* CARD */
+
+        .card {
+            background: white;
+            border: 1px solid #e7e3e5;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(40, 35, 40, 0.07);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #8a8588;
+            margin-bottom: 25px;
+        }
+
+
+        /* INPUT */
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #777174;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ddd8da;
+            border-radius: 8px;
+            background: #faf9f8;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #80658a;
+            background: white;
+        }
+
+        input::placeholder {
+            color: #b7b2b5;
+        }
+
+
+        /* BUTTON */
+
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #29252a;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #80658a;
+        }
+
+
+        /* RESULTS */
+
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .result-box {
+            padding: 18px;
+            border-radius: 9px;
+            background: #faf9f8;
+            border: 1px solid #ebe7e8;
+        }
+
+        .result-label {
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: #888186;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-family: Georgia, serif;
+            font-size: 30px;
+        }
+
+        .maximum {
+            color: #58705d;
+        }
+
+        .minimum {
+            color: #80658a;
+        }
+
+        #error {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #a05252;
+            text-align: center;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            height: 40px;
+            padding: 0 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: #9a9598;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            body {
+                height: auto;
+            }
+
+            main {
+                height: auto;
+                padding: 40px 25px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .intro {
+                text-align: center;
+                padding: 0;
+            }
+
+            .description {
+                margin: auto;
+            }
+
+            footer {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <div class="logo">
+            Array<span>Check</span>
+        </div>
+
+        <div class="nav-text">
+            24070521271_SnehaShah
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main>
+
+        <div class="container">
+
+
+            <!-- INTRODUCTION -->
+
+            <section class="intro">
+
+                <div class="eyebrow">
+                    Array Analysis
+                </div>
+
+                <h1>
+                    Find the<br>
+                    <span>extremes.</span>
+                </h1>
+
+                <p class="description">
+                    Enter a collection of numerical values and
+                    let JavaScript determine the highest and
+                    lowest values in the array.
+                </p>
+
+                <div class="example">
+                    Example: 12, 45, 2, 89, 34
+                </div>
+
+            </section>
+
+
+            <!-- CALCULATOR -->
+
+            <section class="card">
+
+                <h2>Evaluate Array</h2>
+
+                <p class="card-subtitle">
+                    Enter numbers separated by commas.
+                </p>
+
+
+                <label for="arrayInput">
+                    NUMERICAL VALUES
+                </label>
+
+                <input
+                    type="text"
+                    id="arrayInput"
+                    placeholder="12, 45, 2, 89, 34"
+                >
+
+
+                <button onclick="findValues()">
+                    Find Maximum & Minimum
+                </button>
+
+
+                <!-- RESULTS -->
+
+                <div class="results">
+
+                    <div class="result-box">
+
+                        <div class="result-label">
+                            Maximum
+                        </div>
+
+                        <div
+                            id="maximum"
+                            class="result-value maximum">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-box">
+
+                        <div class="result-label">
+                            Minimum
+                        </div>
+
+                        <div
+                            id="minimum"
+                            class="result-value minimum">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div id="error"></div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <span>JAVASCRIPT LAB</span>
+
+        <span>ARRAY • MAXIMUM • MINIMUM</span>
+
+    </footer>
+
+
+    <script>
+
+        function findValues() {
+
+            try {
+
+                // Get the user's input
+                let input =
+                    document.getElementById("arrayInput").value;
+
+
+                // Check if input is empty
+                if (input.trim() === "") {
+                    throw new Error("Please enter some numbers.");
+                }
+
+
+                // Convert input into an array
+                let numbers = input.split(",").map(Number);
+
+
+                // Check for invalid values
+                if (numbers.some(isNaN)) {
+                    throw new Error(
+                        "Please enter only numerical values."
+                    );
+                }
+
+
+                // Assume first element is maximum and minimum
+                let maximum = numbers[0];
+                let minimum = numbers[0];
+
+
+                // Evaluate every element
+                for (let i = 1; i < numbers.length; i++) {
+
+                    if (numbers[i] > maximum) {
+                        maximum = numbers[i];
+                    }
+
+                    if (numbers[i] < minimum) {
+                        minimum = numbers[i];
+                    }
+
+                }
+
+
+                // Display results
+                document.getElementById("maximum").innerHTML =
+                    maximum;
+
+                document.getElementById("minimum").innerHTML =
+                    minimum;
+
+                document.getElementById("error").innerHTML = "";
+
+            }
+
+
+            catch (error) {
+
+                document.getElementById("maximum").innerHTML = "—";
+                document.getElementById("minimum").innerHTML = "—";
+
+                document.getElementById("error").innerHTML =
+                    error.message;
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+</html>
