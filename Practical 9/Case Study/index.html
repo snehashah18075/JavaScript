@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preference Studio — Practical 9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Theme tokens (switched via data-theme on <html>) ---------- */
+  :root {
+    --scale: 1;
+    --accent: #BC7A3F;
+    --bg: #EFE6D8;
+    --card: #FBF6EE;
+    --ink: #2B2015;
+    --muted: #8F7B62;
+    --line: rgba(43, 32, 21, 0.14);
+    --shadow: 0 18px 44px rgba(60, 35, 10, 0.14);
+  }
+  [data-theme="dark"] {
+    --bg: #14100C;
+    --card: #221B15;
+    --ink: #F1E9DB;
+    --muted: #A8957B;
+    --line: rgba(241, 233, 219, 0.14);
+    --shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  }
+  [data-theme="sand"] {
+    --bg: #D6C5A8;
+    --card: #E9DDC6;
+    --ink: #3A2C1C;
+    --muted: #7F6A49;
+    --line: rgba(58, 44, 28, 0.2);
+    --shadow: 0 18px 44px rgba(70, 48, 20, 0.2);
+  }
+
+  * { box-sizing: border-box; }
+  html { font-size: calc(16px * var(--scale)); height: 100%; }
+
+  body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 1040px;
+    height: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ---------- Header ---------- */
+  .header { text-align: center; flex-shrink: 0; }
+
+  .eyebrow {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 4px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.7rem;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+
+  .greeting { margin: 4px 0 0; font-size: 0.78rem; color: var(--muted); }
+  .id-line { margin: 3px 0 0; font-size: 0.64rem; color: var(--muted); letter-spacing: 0.4px; opacity: 0.85; }
+
+  /* ---------- Layout ---------- */
+  .grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 14px;
+  }
+
+  .right-col { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    overflow: auto;
+    transition: background 0.3s ease;
+  }
+  .card.grow { flex: 1; }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  .card-head h2 {
+    margin: 0;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+
+  .tag {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+
+  .label {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+
+  /* ---------- Controls ---------- */
+  .theme-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  .theme-btn {
+    background: transparent;
+    border: 1.5px solid var(--line);
+    border-radius: 9px;
+    padding: 8px 6px 7px;
+    cursor: pointer;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.15s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+  .theme-btn.active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+
+  .swatch {
+    width: 100%;
+    height: 22px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: linear-gradient(135deg, var(--a) 55%, var(--b) 55%);
+  }
+
+  .accent-row { display: flex; gap: 10px; }
+
+  .accent-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    outline: 1.5px solid var(--line);
+    outline-offset: 2px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .accent-btn.active { outline: 2px solid var(--ink); }
+
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--line); border-radius: 9px; overflow: hidden; }
+  .seg button {
+    background: transparent;
+    border: none;
+    padding: 8px 0;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+    border-right: 1px solid var(--line);
+  }
+  .seg button:last-child { border-right: none; }
+  .seg button.active { background: var(--accent); color: #fff; }
+
+  input[type="text"], textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 7px 1px;
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.15s ease;
+  }
+  input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: none; height: 58px; font-size: 0.8rem; }
+  ::placeholder { color: var(--muted); opacity: 0.7; }
+
+  .btn-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 6px; }
+  .note { font-size: 0.62rem; color: var(--muted); }
+
+  .btn {
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    border-radius: 3px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 0.64rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ---------- Session stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 18px; }
+  .stat .k { font-size: 0.58rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .stat .k i { font-style: normal; color: var(--accent); font-size: 0.55rem; border: 1px solid var(--accent); border-radius: 999px; padding: 0 5px; letter-spacing: 0.5px; }
+  .stat .v { font-family: 'Fraunces', serif; font-size: 1.05rem; margin-top: 2px; }
+
+  /* ---------- Inspector ---------- */
+  .inspector { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; min-height: 0; }
+  .inspector h3 { margin: 0 0 6px; font-size: 0.6rem; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .kv-list { display: flex; flex-direction: column; gap: 4px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.66rem; }
+  .kv { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .kv .k { color: var(--muted); }
+  .kv .v { color: var(--ink); max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .empty { color: var(--muted); font-style: italic; font-size: 0.66rem; }
+
+  @media (max-height: 700px), (max-width: 820px) {
+    body { overflow: auto; align-items: flex-start; }
+    .shell { height: auto; max-height: none; }
+    .grid { grid-template-columns: 1fr; }
+    .inspector { grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+  // Apply saved look immediately (before first paint) so there is no theme flash on reload.
+  try {
+    var t = localStorage.getItem('p9_theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="header">
+    <p class="eyebrow">Practical 9</p>
+    <h1>Preference Studio</h1>
+    <p class="greeting" id="greeting">Welcome</p>
+    <p class="id-line">Sneha Shah &nbsp;|&nbsp; 24070521271</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT: localStorage preferences -->
+    <section class="card">
+      <div class="card-head">
+        <h2>Your Preferences</h2>
+        <span class="tag">localStorage &middot; persistent</span>
+      </div>
+
+      <div>
+        <span class="label">Theme</span>
+        <div class="theme-row" id="themeRow">
+          <button class="theme-btn" data-theme="light" style="--a:#FBF6EE;--b:#2B2015"><span class="swatch"></span>Light</button>
+          <button class="theme-btn" data-theme="dark" style="--a:#221B15;--b:#F1E9DB"><span class="swatch"></span>Dark</button>
+          <button class="theme-btn" data-theme="sand" style="--a:#E9DDC6;--b:#7F6A49"><span class="swatch"></span>Sand</button>
+        </div>
+      </div>
+
+      <div>
+        <span class="label">Accent colour</span>
+        <div class="accent-row" id="accentRow">
+          <button class="accent-btn" data-accent="#BC7A3F" style="background:#BC7A3F" aria-label="Copper"></button>
+          <button class="accent-btn" data-accent="#4F6658" style="background:#4F6658" aria-label="Forest"></button>
+          <button class="accent-btn" data-accent="#7A4E6B" style="background:#7A4E6B" aria-label="Plum"></button>
+          <button class="accent-btn" data-accent="#3B5B82" style="background:#3B5B82" aria-label="Navy"></button>
+        </div>
+      </div>
+
+      <div>
+        <span class="label">Text size</span>
+        <div class="seg" id="sizeRow">
+          <button data-size="sm">Small</button>
+          <button data-size="md">Medium</button>
+          <button data-size="lg">Large</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="label" for="nameInput">Display name</label>
+        <input type="text" id="nameInput" placeholder="What should we call you?" maxlength="30">
+      </div>
+
+      <div class="btn-row">
+        <span class="note">Saved automatically on every change.</span>
+        <button class="btn" id="resetBtn">Reset preferences</button>
+      </div>
+    </section>
+
+    <!-- RIGHT: sessionStorage + inspector -->
+    <div class="right-col">
+
+      <section class="card">
+        <div class="card-head">
+          <h2>This Session</h2>
+          <span class="tag">sessionStorage &middot; this tab only</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="k">Page loads <i>session</i></div><div class="v" id="sLoads">0</div></div>
+          <div class="stat"><div class="k">Session started <i>session</i></div><div class="v" id="sStart">&mdash;</div></div>
+          <div class="stat"><div class="k">Total visits <i>local</i></div><div class="v" id="lVisits">0</div></div>
+          <div class="stat"><div class="k">Previous visit <i>local</i></div><div class="v" id="lLast">&mdash;</div></div>
+        </div>
+
+        <div>
+          <label class="label" for="noteInput">Session scratchpad &mdash; gone when this tab closes</label>
+          <textarea id="noteInput" placeholder="Jot something down, then refresh the page..."></textarea>
+        </div>
+
+        <div class="btn-row" style="margin-top:0">
+          <span class="note">Survives a refresh, not a closed tab.</span>
+          <button class="btn" id="clearSessionBtn">Clear session data</button>
+        </div>
+      </section>
+
+      <section class="card grow">
+        <div class="card-head">
+          <h2>Storage Inspector</h2>
+          <span class="tag">live view</span>
+        </div>
+        <div class="inspector">
+          <div>
+            <h3>localStorage</h3>
+            <div class="kv-list" id="localList"></div>
+          </div>
+          <div>
+            <h3>sessionStorage</h3>
+            <div class="kv-list" id="sessionList"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // Practical 9 — localStorage & sessionStorage (User Preferences)
+  //   localStorage   -> theme, accent, text size, name, visit stats (persist)
+  //   sessionStorage -> page-load count, session start, scratchpad (per tab)
+  // ============================================================
+
+  const KEY = {
+    theme: "p9_theme", accent: "p9_accent", size: "p9_fontsize", name: "p9_name",
+    visits: "p9_visits", last: "p9_lastVisit",
+    loads: "p9_sessionLoads", start: "p9_sessionStart", note: "p9_note"
+  };
+  const PREFIX = "p9_";
+  const DEFAULTS = { theme: "light", accent: "#BC7A3F", size: "md" };
+  const SCALE = { sm: 0.92, md: 1, lg: 1.08 };
+
+  const root = document.documentElement;
+
+  // ---- Safe storage helpers (storage can be blocked / full) ----
+  const store = (area) => ({
+    get: (k) => { try { return area.getItem(k); } catch (e) { return null; } },
+    set: (k, v) => { try { area.setItem(k, v); } catch (e) { console.warn("Storage write failed", e); } },
+    remove: (k) => { try { area.removeItem(k); } catch (e) {} }
+  });
+  const ls = store(window.localStorage);
+  const ss = store(window.sessionStorage);
+
+  // ---- DOM refs ----
+  const themeBtns = document.querySelectorAll(".theme-btn");
+  const accentBtns = document.querySelectorAll(".accent-btn");
+  const sizeBtns = document.querySelectorAll("#sizeRow button");
+  const nameInput = document.getElementById("nameInput");
+  const noteInput = document.getElementById("noteInput");
+  const greeting = document.getElementById("greeting");
+
+  let previousVisit = null;
+
+  const fmt = (iso) => iso
+    ? new Date(iso).toLocaleString(undefined, { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })
+    : "\u2014";
+
+  // ---- Apply saved preferences to the page ----
+  function applyPrefs() {
+    const theme = ls.get(KEY.theme) || DEFAULTS.theme;
+    const accent = ls.get(KEY.accent) || DEFAULTS.accent;
+    const size = ls.get(KEY.size) || DEFAULTS.size;
+    const name = ls.get(KEY.name) || "";
+
+    root.setAttribute("data-theme", theme);
+    root.style.setProperty("--accent", accent);
+    root.style.setProperty("--scale", SCALE[size] || 1);
+
+    themeBtns.forEach(b => b.classList.toggle("active", b.dataset.theme === theme));
+    accentBtns.forEach(b => b.classList.toggle("active", b.dataset.accent === accent));
+    sizeBtns.forEach(b => b.classList.toggle("active", b.dataset.size === size));
+
+    if (document.activeElement !== nameInput) nameInput.value = name;
+    greeting.textContent = name ? "Welcome back, " + name : "Welcome";
+  }
+
+  // ---- Render session stats + inspector ----
+  function renderStats() {
+    document.getElementById("sLoads").textContent = ss.get(KEY.loads) || "0";
+    document.getElementById("sStart").textContent = fmt(ss.get(KEY.start));
+    document.getElementById("lVisits").textContent = ls.get(KEY.visits) || "0";
+    document.getElementById("lLast").textContent = previousVisit ? fmt(previousVisit) : "First visit";
+  }
+
+  function renderList(area, el) {
+    el.innerHTML = "";
+    const rows = [];
+    for (let i = 0; i < area.length; i++) {
+      const k = area.key(i);
+      if (k && k.startsWith(PREFIX)) rows.push([k, area.getItem(k)]);
+    }
+    rows.sort((a, b) => a[0].localeCompare(b[0]));
+    if (rows.length === 0) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "no keys stored";
+      el.appendChild(p);
+      return;
+    }
+    rows.forEach(([k, v]) => {
+      const row = document.createElement("div");
+      row.className = "kv";
+      const kk = document.createElement("span"); kk.className = "k"; kk.textContent = k.replace(PREFIX, "");
+      const vv = document.createElement("span"); vv.className = "v"; vv.textContent = v; vv.title = v;
+      row.append(kk, vv);
+      el.appendChild(row);
+    });
+  }
+
+  function renderInspector() {
+    try {
+      renderList(window.localStorage, document.getElementById("localList"));
+      renderList(window.sessionStorage, document.getElementById("sessionList"));
+    } catch (e) {}
+  }
+
+  const refresh = () => { applyPrefs(); renderStats(); renderInspector(); };
+
+  // ---- Preference controls (write to localStorage) ----
+  themeBtns.forEach(b => b.addEventListener("click", () => { ls.set(KEY.theme, b.dataset.theme); refresh(); }));
+  accentBtns.forEach(b => b.addEventListener("click", () => { ls.set(KEY.accent, b.dataset.accent); refresh(); }));
+  sizeBtns.forEach(b => b.addEventListener("click", () => { ls.set(KEY.size, b.dataset.size); refresh(); }));
+
+  nameInput.addEventListener("input", () => {
+    const v = nameInput.value.trim();
+    v ? ls.set(KEY.name, v) : ls.remove(KEY.name);
+    refresh();
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    [KEY.theme, KEY.accent, KEY.size, KEY.name].forEach(ls.remove);
+    nameInput.value = "";
+    refresh();
+  });
+
+  // ---- Session controls (write to sessionStorage) ----
+  noteInput.addEventListener("input", () => {
+    noteInput.value ? ss.set(KEY.note, noteInput.value) : ss.remove(KEY.note);
+    renderInspector();
+  });
+
+  document.getElementById("clearSessionBtn").addEventListener("click", () => {
+    [KEY.loads, KEY.start, KEY.note].forEach(ss.remove);
+    noteInput.value = "";
+    renderStats();
+    renderInspector();
+  });
+
+  // ---- Keep other open tabs in sync when localStorage changes ----
+  window.addEventListener("storage", refresh);
+
+  // ---- Init on page load ----
+  (function init() {
+    // localStorage: visit tracking (persists across sessions)
+    previousVisit = ls.get(KEY.last);
+    ls.set(KEY.visits, String((parseInt(ls.get(KEY.visits), 10) || 0) + 1));
+    ls.set(KEY.last, new Date().toISOString());
+
+    // sessionStorage: per-tab counters (reset when the tab closes)
+    ss.set(KEY.loads, String((parseInt(ss.get(KEY.loads), 10) || 0) + 1));
+    if (!ss.get(KEY.start)) ss.set(KEY.start, new Date().toISOString());
+    noteInput.value = ss.get(KEY.note) || "";
+
+    refresh();
+  })();
+</script>
+
+</body>
+</html>
