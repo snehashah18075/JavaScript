@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>My First jQuery Program</h2>
+
+    <p id="demo" Welcome tp jQuery1></p>
+
+    <button id="btn">Hide Paragrapgh</button>
+
+    <script>
+        $(document).ready(function() {
+            $("#btn").click(function() {
+                $("#demo").hide();
+            });
+        });
+    </script>
+</body>
+</html>

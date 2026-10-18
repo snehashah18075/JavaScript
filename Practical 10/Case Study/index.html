@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Data Explorer — Practical 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EFE6D8;
+    --card: #FBF6EE;
+    --ink: #2B2015;
+    --muted: #8F7B62;
+    --line: rgba(43, 32, 21, 0.14);
+    --accent: #BC7A3F;
+    --green: #4F7A55;
+    --red: #A6523C;
+    --shadow: 0 18px 44px rgba(60, 35, 10, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ---------- Header ---------- */
+  .header { text-align: center; flex-shrink: 0; }
+
+  .eyebrow {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 4px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.7rem;
+    margin: 0;
+  }
+
+  .header .sub { margin: 4px 0 0; font-size: 0.72rem; color: var(--muted); }
+  .id-line { margin: 3px 0 0; font-size: 0.64rem; color: var(--muted); letter-spacing: 0.4px; opacity: 0.85; }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- Controls ---------- */
+  .controls {
+    flex-shrink: 0;
+    padding: 14px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+  }
+
+  .group { display: flex; flex-direction: column; gap: 5px; }
+  .group.grow { flex: 1; min-width: 160px; }
+
+  .label {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  select, input[type="text"] {
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.82rem;
+    padding: 7px 2px;
+    outline: none;
+    border-radius: 0;
+    height: 32px;
+    transition: border-color 0.15s ease;
+  }
+  select { cursor: pointer; padding-right: 6px; }
+  select:focus, input[type="text"]:focus { border-color: var(--accent); }
+  ::placeholder { color: var(--muted); opacity: 0.7; }
+
+  .btn {
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 0.64rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+    height: 34px;
+  }
+  .btn-primary { background: var(--ink); color: #F5EFE4; }
+  .btn-primary:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
+  .btn-outline { background: transparent; color: var(--ink); }
+  .btn-outline:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--muted); text-decoration: underline; padding: 9px 8px; }
+  .btn-ghost:hover:not(:disabled) { color: var(--ink); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ---------- Status strip ---------- */
+  .status {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .state { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .status.loading .dot { background: var(--accent); animation: pulse 0.9s ease-in-out infinite; }
+  .status.ok .dot { background: var(--green); }
+  .status.error .dot { background: var(--red); }
+  .status.error .msg { color: var(--red); }
+  @keyframes pulse { 50% { opacity: 0.25; } }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 0.64rem;
+    letter-spacing: 0.3px;
+    color: var(--ink);
+  }
+  .chip b { color: var(--accent); font-weight: 600; }
+
+  /* ---------- Table area ---------- */
+  .table-card { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .table-scroll { flex: 1; min-height: 0; overflow: auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    text-align: left;
+    padding: 11px 18px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  thead th:hover { color: var(--accent); }
+  thead th .arrow { color: var(--accent); margin-left: 4px; }
+
+  tbody td { padding: 10px 18px; border-bottom: 1px solid var(--line); }
+  tbody tr:nth-child(even) { background: rgba(188, 122, 63, 0.05); }
+  tbody tr:hover { background: rgba(188, 122, 63, 0.12); }
+  tbody td:first-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--muted);
+    text-align: center;
+    padding: 20px;
+  }
+  .empty .big { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--ink); }
+  .empty p { margin: 0; font-size: 0.74rem; }
+
+  .count { padding: 8px 18px; font-size: 0.64rem; color: var(--muted); border-top: 1px solid var(--line); flex-shrink: 0; }
+
+  @media (max-width: 720px) {
+    body { overflow: auto; }
+    .shell { height: auto; min-height: 100%; }
+    .table-card { min-height: 360px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="header">
+    <p class="eyebrow">Practical 10</p>
+    <h1>JSON Data Explorer</h1>
+    <p class="sub">Load JSON with fetch() or jQuery $.getJSON() and render it dynamically in a table</p>
+    <p class="id-line">Sneha Shah &nbsp;|&nbsp; 24070521271</p>
+  </div>
+
+  <div class="card controls">
+    <div class="group">
+      <label class="label" for="sourceSelect">Data source</label>
+      <select id="sourceSelect">
+        <option value="local">Local file &mdash; data.json</option>
+        <option value="remote">Remote API &mdash; JSONPlaceholder</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary" id="fetchBtn">Load with fetch()</button>
+    <button class="btn btn-outline" id="jqBtn">Load with $.getJSON()</button>
+    <button class="btn btn-ghost" id="clearBtn">Clear</button>
+
+    <div class="group grow">
+      <label class="label" for="searchInput">Search table</label>
+      <input type="text" id="searchInput" placeholder="Filter any column..." autocomplete="off">
+    </div>
+  </div>
+
+  <div class="status idle" id="status">
+    <div class="state"><span class="dot"></span><span class="msg" id="statusMsg">Ready &mdash; choose a loading method.</span></div>
+    <div class="chips">
+      <span class="chip">Method: <b id="chipMethod">&mdash;</b></span>
+      <span class="chip">Records: <b id="chipRecords">0</b></span>
+      <span class="chip">Time: <b id="chipTime">&mdash;</b></span>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <div class="table-scroll" id="tableScroll">
+      <div class="empty" id="emptyState">
+        <span class="big">No data loaded yet</span>
+        <p>Pick a source, then load it using fetch() or $.getJSON().</p>
+      </div>
+      <table id="dataTable" hidden>
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="count" id="countLine">&nbsp;</div>
+  </div>
+
+</div>
+
+<!-- jQuery (needed for $.getJSON) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  // ============================================================
+  // Practical 10 — Load & display JSON using fetch() and $.getJSON()
+  // Both methods feed the SAME renderer, which builds the table
+  // dynamically from whatever keys the JSON records contain.
+  // ============================================================
+
+  // ---- Data sources: each has a URL and a normalize() that returns an array of flat records ----
+  const SOURCES = {
+    local: {
+      url: "data.json",
+      normalize: (data) => data.students
+    },
+    remote: {
+      url: "https://jsonplaceholder.typicode.com/users",
+      normalize: (data) => data.map(u => ({
+        id: u.id, name: u.name, email: u.email, city: u.address.city, company: u.company.name
+      }))
+    }
+  };
+
+  const LABELS = { id: "ID", cgpa: "CGPA" };
+  const prettify = (key) => LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1);
+
+  // ---- DOM references (plain names: "$" is reserved for jQuery) ----
+  const el = {
+    source: document.getElementById("sourceSelect"),
+    fetchBtn: document.getElementById("fetchBtn"),
+    jqBtn: document.getElementById("jqBtn"),
+    clearBtn: document.getElementById("clearBtn"),
+    search: document.getElementById("searchInput"),
+    status: document.getElementById("status"),
+    statusMsg: document.getElementById("statusMsg"),
+    chipMethod: document.getElementById("chipMethod"),
+    chipRecords: document.getElementById("chipRecords"),
+    chipTime: document.getElementById("chipTime"),
+    table: document.getElementById("dataTable"),
+    thead: document.querySelector("#dataTable thead"),
+    tbody: document.querySelector("#dataTable tbody"),
+    empty: document.getElementById("emptyState"),
+    count: document.getElementById("countLine")
+  };
+
+  // ---- View state ----
+  let rows = [];
+  let sortKey = null;
+  let sortDir = 1;
+  let query = "";
+
+  // ---------- Status helpers ----------
+  function setStatus(type, message) {
+    el.status.className = "status " + type;
+    el.statusMsg.textContent = message;
+  }
+
+  function setBusy(busy) {
+    el.fetchBtn.disabled = busy;
+    el.jqBtn.disabled = busy;
+  }
+
+  // ---------- Shared success / error handlers ----------
+  function handleSuccess(data, method, startTime) {
+    let records;
+    try {
+      records = SOURCES[el.source.value].normalize(data);
+    } catch (e) {
+      return handleError(method, "The JSON was loaded but its structure was not what the page expected.");
+    }
+    if (!Array.isArray(records) || records.length === 0) {
+      return handleError(method, "The JSON was loaded but contained no records.");
+    }
+
+    rows = records;
+    sortKey = null;
+    sortDir = 1;
+    const ms = Math.round(performance.now() - startTime);
+
+    el.chipMethod.textContent = method;
+    el.chipRecords.textContent = records.length;
+    el.chipTime.textContent = ms + " ms";
+    setStatus("ok", "Loaded " + records.length + " records using " + method + ".");
+    setBusy(false);
+    renderTable();
+  }
+
+  function handleError(method, detail) {
+    const onFileProtocol = location.protocol === "file:" && el.source.value === "local";
+    const hint = onFileProtocol
+      ? " Browsers block " + method + " on file:// pages \u2014 open this page with VS Code Live Server."
+      : "";
+    setStatus("error", method + " failed: " + detail + hint);
+    el.chipMethod.textContent = method;
+    setBusy(false);
+  }
+
+  // ---------- Method 1: fetch() (native, Promise based) ----------
+  function loadWithFetch() {
+    const method = "fetch()";
+    const start = performance.now();
+    setBusy(true);
+    setStatus("loading", "Requesting data with fetch()...");
+
+    fetch(SOURCES[el.source.value].url)
+      .then(response => {
+        // fetch() only rejects on network failure; HTTP errors (404, 500) must be checked manually
+        if (!response.ok) throw new Error("HTTP " + response.status + " " + response.statusText);
+        return response.json();               // parse the body as JSON -> returns another Promise
+      })
+      .then(data => handleSuccess(data, method, start))
+      .catch(err => handleError(method, err.message));
+  }
+
+  // ---------- Method 2: jQuery $.getJSON() (shorthand for $.ajax with dataType "json") ----------
+  function loadWithJQuery() {
+    const method = "$.getJSON()";
+    if (typeof $ === "undefined") {
+      return handleError(method, "jQuery did not load \u2014 check your internet connection.");
+    }
+    const start = performance.now();
+    setBusy(true);
+    setStatus("loading", "Requesting data with $.getJSON()...");
+
+    $.getJSON(SOURCES[el.source.value].url)
+      .done(data => handleSuccess(data, method, start))   // JSON is already parsed for us
+      .fail((jqXHR, textStatus, errorThrown) => {
+        const detail = jqXHR.status
+          ? "HTTP " + jqXHR.status + " " + (errorThrown || "")
+          : (textStatus === "parsererror" ? "response was not valid JSON" : "request could not be completed");
+        handleError(method, detail.trim());
+      });
+  }
+
+  // ---------- Dynamic table rendering ----------
+  function renderTable() {
+    if (rows.length === 0) {
+      el.table.hidden = true;
+      el.empty.style.display = "flex";
+      el.count.innerHTML = "&nbsp;";
+      return;
+    }
+
+    const cols = Object.keys(rows[0]);                       // columns come from the data itself
+    let view = rows.filter(r => !query || cols.some(c => String(r[c]).toLowerCase().includes(query)));
+
+    if (sortKey) {
+      view = view.slice().sort((a, b) => {
+        const x = a[sortKey], y = b[sortKey];
+        const cmp = (typeof x === "number" && typeof y === "number")
+          ? x - y
+          : String(x).localeCompare(String(y), undefined, { numeric: true });
+        return cmp * sortDir;
+      });
+    }
+
+    // header row
+    el.thead.innerHTML = "";
+    const headRow = document.createElement("tr");
+    cols.forEach(c => {
+      const th = document.createElement("th");
+      th.textContent = prettify(c);
+      if (c === sortKey) {
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = sortDir === 1 ? "\u25B2" : "\u25BC";
+        th.appendChild(arrow);
+      }
+      th.addEventListener("click", () => {
+        sortDir = (sortKey === c) ? -sortDir : 1;
+        sortKey = c;
+        renderTable();
+      });
+      headRow.appendChild(th);
+    });
+    el.thead.appendChild(headRow);
+
+    // body rows
+    el.tbody.innerHTML = "";
+    if (view.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = cols.length;
+      td.style.textAlign = "center";
+      td.style.color = "var(--muted)";
+      td.textContent = "No records match your search.";
+      tr.appendChild(td);
+      el.tbody.appendChild(tr);
+    } else {
+      view.forEach(r => {
+        const tr = document.createElement("tr");
+        cols.forEach(c => {
+          const td = document.createElement("td");
+          td.textContent = r[c];                             // textContent keeps the data safe
+          tr.appendChild(td);
+        });
+        el.tbody.appendChild(tr);
+      });
+    }
+
+    el.empty.style.display = "none";
+    el.table.hidden = false;
+    el.count.textContent = "Showing " + view.length + " of " + rows.length + " records";
+  }
+
+  // ---------- Event wiring ----------
+  el.fetchBtn.addEventListener("click", loadWithFetch);
+  el.jqBtn.addEventListener("click", loadWithJQuery);
+
+  el.search.addEventListener("input", () => {
+    query = el.search.value.trim().toLowerCase();
+    renderTable();
+  });
+
+  el.clearBtn.addEventListener("click", () => {
+    rows = [];
+    sortKey = null;
+    query = "";
+    el.search.value = "";
+    el.chipMethod.textContent = "\u2014";
+    el.chipRecords.textContent = "0";
+    el.chipTime.textContent = "\u2014";
+    setStatus("idle", "Ready \u2014 choose a loading method.");
+    renderTable();
+  });
+
+  // Switching source clears the old table so the data on screen always matches the selected source
+  el.source.addEventListener("change", () => el.clearBtn.click());
+</script>
+
+</body>
+</html>

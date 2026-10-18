@@ -1,0 +1,16 @@
+{
+  "students": [
+    { "id": 1,  "name": "Aarav Sharma",   "department": "Data Science",     "year": 3, "cgpa": 8.7, "city": "Nagpur" },
+    { "id": 2,  "name": "Diya Mehta",     "department": "Computer Science", "year": 2, "cgpa": 9.1, "city": "Pune" },
+    { "id": 3,  "name": "Rohan Deshmukh", "department": "Data Science",     "year": 3, "cgpa": 7.9, "city": "Nagpur" },
+    { "id": 4,  "name": "Ananya Iyer",    "department": "AI & ML",          "year": 1, "cgpa": 8.4, "city": "Chennai" },
+    { "id": 5,  "name": "Kabir Singh",    "department": "Computer Science", "year": 4, "cgpa": 8.1, "city": "Delhi" },
+    { "id": 6,  "name": "Meera Joshi",    "department": "Data Science",     "year": 2, "cgpa": 9.4, "city": "Mumbai" },
+    { "id": 7,  "name": "Vikram Rao",     "department": "AI & ML",          "year": 3, "cgpa": 7.6, "city": "Hyderabad" },
+    { "id": 8,  "name": "Isha Kulkarni",  "department": "Computer Science", "year": 1, "cgpa": 8.9, "city": "Nashik" },
+    { "id": 9,  "name": "Arjun Patel",    "department": "Data Science",     "year": 4, "cgpa": 8.3, "city": "Ahmedabad" },
+    { "id": 10, "name": "Sana Khan",      "department": "AI & ML",          "year": 2, "cgpa": 9.0, "city": "Bhopal" },
+    { "id": 11, "name": "Neil Fernandes", "department": "Computer Science", "year": 3, "cgpa": 7.8, "city": "Goa" },
+    { "id": 12, "name": "Tara Banerjee",  "department": "Data Science",     "year": 1, "cgpa": 8.6, "city": "Kolkata" }
+  ]
+}
