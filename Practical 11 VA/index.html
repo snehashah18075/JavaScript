@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Scheduler — Practical 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="file-banner" id="fileBanner" hidden>
+    ES modules cannot load from <b>file://</b>. Open this folder in VS Code and use <b>Live Server</b>.
+  </div>
+
+  <header class="topbar">
+    <div class="title-block">
+      <p class="eyebrow">Practical 11</p>
+      <h1>Class Scheduler</h1>
+      <p class="id-line">Sneha Shah &nbsp;|&nbsp; 24070521271</p>
+    </div>
+
+    <div class="clock">
+      <div class="clock-row">
+        <span class="live-dot" id="liveDot"></span>
+        <span class="clock-time" id="clockTime">--:--:--</span>
+        <span class="clock-suffix" id="clockSuffix"></span>
+      </div>
+      <div class="clock-date" id="clockDate"></div>
+      <span class="demo-badge" id="demoBadge" hidden></span>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- Live countdown card -->
+    <section class="card hero">
+      <p class="label" id="heroLabel">Loading</p>
+      <h2 class="hero-title" id="heroTitle">&nbsp;</h2>
+      <p class="hero-meta" id="heroMeta">&nbsp;</p>
+
+      <div class="count-block">
+        <p class="count-label" id="heroCountLabel">&nbsp;</p>
+        <p class="count" id="heroCount">--:--:--</p>
+        <div class="progress" id="progressWrap" hidden><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <p class="hero-secondary" id="heroSecondary">&nbsp;</p>
+
+      <div class="controls">
+        <button class="btn btn-primary" id="remindBtn">Remind me</button>
+        <button class="btn btn-outline" id="demoBtn">Demo clock</button>
+        <button class="btn btn-ghost" id="liveBtn">Pause updates</button>
+      </div>
+    </section>
+
+    <!-- Timetable card -->
+    <section class="card schedule">
+      <div class="card-head">
+        <h2>Timetable</h2>
+        <span class="summary" id="listSummary"></span>
+      </div>
+      <div class="tabs" id="tabs"></div>
+      <div class="list" id="list"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+  // Friendly warning if the page is opened by double-clicking (modules need http://)
+  if (location.protocol === "file:") document.getElementById("fileBanner").hidden = false;
+</script>
+<script type="module" src="js/main.js"></script>
+
+</body>
+</html>
